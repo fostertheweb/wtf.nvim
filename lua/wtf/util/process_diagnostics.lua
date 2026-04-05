@@ -1,5 +1,6 @@
 local config = require("wtf.config")
 local get_diagnostics = require("wtf.util.diagnostics")
+local get_line_range = require("wtf.util.get_line_range")
 local get_programming_language = require("wtf.util.get_programming_language")
 
 --- Get content between specified lines with line numbers
@@ -22,11 +23,29 @@ local function format_diagnostics(diagnostics)
   local formatted_parts = {}
 
   for i, diagnostic in ipairs(diagnostics) do
+    local location
+    if diagnostic.end_line_number and diagnostic.end_line_number ~= diagnostic.line_number then
+      location = string.format(
+        "Lines %d-%d, Columns %d-%d",
+        diagnostic.line_number,
+        diagnostic.end_line_number,
+        diagnostic.col,
+        diagnostic.end_col
+      )
+    else
+      location = string.format(
+        "Line %d, Columns %d-%d",
+        diagnostic.line_number,
+        diagnostic.col,
+        diagnostic.end_col
+      )
+    end
+
     local diagnostic_text = string.format(
-      "%d. Issue %d\n\t- Location: Line %d\n\t- Severity: %s\n\t- Message: %s",
+      "%d. Issue %d\n\t- Location: %s\n\t- Severity: %s\n\t- Message: %s",
       i,
       i,
-      diagnostic.line_number,
+      location,
       diagnostic.severity,
       diagnostic.message
     )
@@ -60,32 +79,6 @@ local function build_payload(programming_language, diagnostics_text, code, instr
   end
 
   return table.concat(payload_parts, "\n")
-end
-
---- Determine line range based on options or current mode
---- @param opts table|nil Options containing line1, line2, and instructions
---- @return number line1, number line2
-local function get_line_range(opts)
-  if opts and opts.line1 and opts.line2 then
-    return opts.line1, opts.line2
-  end
-
-  local mode = vim.api.nvim_get_mode().mode
-  local is_visual = mode:match("^[vV]")
-
-  if is_visual then
-    -- Get visual range before escaping visual mode
-    local start_line = vim.fn.getpos("v")[2]
-    local end_line = vim.fn.getcurpos()[2]
-    -- Ensure start_line is always less than or equal to end_line
-    if start_line > end_line then
-      start_line, end_line = end_line, start_line
-    end
-    return start_line, end_line
-  else
-    local current_line = vim.fn.line(".")
-    return current_line, current_line
-  end
 end
 
 --- Process diagnostics for a given range

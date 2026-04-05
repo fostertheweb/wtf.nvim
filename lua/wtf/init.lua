@@ -5,7 +5,7 @@ local history = require("wtf.commands.history")
 local hooks = require("wtf.hooks")
 local pick_provider = require("wtf.commands.pick_provider")
 local search = require("wtf.commands.search")
-
+local yank = require("wtf.commands.yank")
 local M = {}
 
 function M.ai(opts)
@@ -45,8 +45,11 @@ function M.search(opts)
   return search(opts)
 end
 
+function M.yank(opts)
+  return yank(opts)
+end
+
 function M.setup(opts)
   config.setup(opts)
 end
-
 return M

@@ -18,6 +18,6 @@ M.gemini = require("wtf.ai.providers.gemini")
 M.grok = require("wtf.ai.providers.grok")
 M.ollama = require("wtf.ai.providers.ollama")
 M.openai = require("wtf.ai.providers.openai")
-M.opencode_go = require("wtf.ai.providers.opencode-go")
+M.opencode = require("wtf.ai.providers.opencode")
 
 return M

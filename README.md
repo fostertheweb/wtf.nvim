@@ -28,7 +28,7 @@ Why spend time copying and pasting, or worse yet, typing out diagnostic messages
 
 ### Providers
 
-Support for [Anthropic](https://www.anthropic.com), [Copilot](https://github.com/copilot), [DeepSeek](https://www.deepseek.com), [Gemini](https://gemini.google.com), [Grok](https://x.ai), [Ollama](https://ollama.com) and [OpenAI](https://openai.com).
+Support for [Anthropic](https://www.anthropic.com), [Copilot](https://github.com/copilot), [DeepSeek](https://www.deepseek.com), [Gemini](https://gemini.google.com), [Grok](https://x.ai), [Ollama](https://ollama.com), [OpenAI](https://openai.com) and [OpenCode](https://opencode.ai).
 
 ### Multiple picker support
 
@@ -151,6 +151,9 @@ export GROK_API_KEY=your-api-key
 
 // OpenAI
 export OPENAI_API_KEY=your-api-key
+
+// OpenCode
+export OPENCODE_API_KEY=your-api-key
 ```
 
 You can also set or override API keys in your config, but it is recommended to use environment variables.
@@ -164,7 +167,7 @@ You can also set or override API keys in your config, but it is recommended to u
   -- Default AI popup type
   popup_type = "popup" | "horizontal" | "vertical",
   -- The default provider
-  provider = "anthropic" | "copilot" | "deepseek" | "gemini" | "grok" | "ollama" | "openai",
+  provider = "anthropic" | "copilot" | "deepseek" | "gemini" | "grok" | "ollama" | "openai" | "opencode",
   -- Configure providers
   providers = {
     anthropic = {

@@ -9,6 +9,12 @@ describe("Setup", function()
     })
   end)
 
+  it("accepts opencode as a provider", function()
+    wtf.setup({
+      provider = "opencode",
+    })
+  end)
+
   it("rejects a broken config", function()
     assert.error_matches(function()
       wtf.setup({

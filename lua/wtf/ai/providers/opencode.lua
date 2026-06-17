@@ -5,7 +5,7 @@ return {
   name = "opencode",
   formatted_name = "OpenCode",
   url = "https://opencode.ai/zen/go/v1/chat/completions",
-  model_id = "opencode-go/qwen3.7-plus",
+  model_id = "qwen3.7-plus",
   headers = {
     ["Content-Type"] = "application/json",
     Authorization = "Bearer ${api_key}",

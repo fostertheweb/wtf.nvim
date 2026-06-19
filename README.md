@@ -46,7 +46,6 @@ Install the plugin with your preferred package manager:
 {
   "piersolenski/wtf.nvim",
   dependencies = {
-    "nvim-lua/plenary.nvim",
     -- Optional: For WtfGrepHistory (pick one)
     "nvim-telescope/telescope.nvim",
     -- "folke/snacks.nvim",
@@ -123,7 +122,6 @@ use({
     require("wtf").setup()
   end,
   requires = {
-    "nvim-lua/plenary.nvim",
     -- Optional: For WtfGrepHistory (pick one)
     "nvim-telescope/telescope.nvim",
     -- "folke/snacks.nvim",
@@ -242,7 +240,7 @@ require("lualine").setup({
 
 ### Running Tests
 
-This plugin uses [plenary.nvim](https://github.com/nvim-lua/plenary.nvim) for testing. Tests are located in the `tests/` directory.
+This plugin requires Neovim 0.12 or later. Tests are located in the `tests/` directory.
 
 #### Run all provider tests
 

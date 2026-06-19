@@ -1,23 +1,6 @@
-local function clone_repo(repo_url, dest_dir)
-  if vim.fn.isdirectory(dest_dir) == 0 then
-    vim.fn.system({ "git", "clone", repo_url, dest_dir })
-  end
-end
-
-local nui_dir = os.getenv("NUI_DIR") or "/tmp/nui.nvim"
-
-local nui_repo = "https://github.com/MunifTanjim/nui.nvim"
-
-clone_repo(nui_repo, nui_dir)
-
 vim.opt.swapfile = false
 
 vim.opt.rtp:append(".")
-vim.opt.rtp:append(nui_dir)
-
-package.path = package.path .. ";" .. nui_dir .. "/lua/?.lua;" .. nui_dir .. "/lua/?/init.lua"
-
-vim.cmd.runtime({ "plugin/nui.vim" })
 
 -- Load luassert as the global assertion library
 _G.assert = require("luassert")

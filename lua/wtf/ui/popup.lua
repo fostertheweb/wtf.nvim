@@ -1,5 +1,3 @@
-local Popup = require("nui.popup")
-local Split = require("nui.split")
 local config = require("wtf.config")
 
 local function split_string_by_line(text)
@@ -10,75 +8,106 @@ local function split_string_by_line(text)
   return lines
 end
 
+local function create_buffer()
+  local buf = vim.api.nvim_create_buf(false, true)
+  vim.bo[buf].modifiable = false
+  vim.bo[buf].readonly = true
+  vim.bo[buf].filetype = "markdown"
+  return buf
+end
+
+local function apply_window_options(win)
+  vim.wo[win].wrap = true
+  vim.wo[win].linebreak = true
+  vim.wo[win].winhighlight = config.options.winhighlight
+end
+
 local M = {}
 
 M.show = function(message)
   local formatted_message = split_string_by_line(message)
-
-  local event = require("nui.utils.autocmd").event
-
-  local popup
-  local popup_opts = {
-    relative = "editor",
-    buf_options = {
-      modifiable = false,
-      readonly = true,
-      filetype = "markdown",
-    },
-    win_options = {
-      wrap = true,
-      linebreak = true,
-      winhighlight = config.options.winhighlight,
-    },
-  }
-
   local popup_type = config.options.popup_type
 
+  local buf = create_buffer()
+  local win
+
   if popup_type == "vertical" then
-    popup = Split(vim.tbl_deep_extend("keep", popup_opts, {
-      position = "right",
-      size = "50%",
-    }))
+    win = vim.api.nvim_open_win(buf, true, {
+      split = "right",
+      width = math.floor(vim.o.columns * 0.5),
+    })
+    apply_window_options(win)
   elseif popup_type == "horizontal" then
-    popup = Split(vim.tbl_deep_extend("keep", popup_opts, {
-      position = "bottom",
-      size = "38%",
-    }))
+    win = vim.api.nvim_open_win(buf, true, {
+      split = "below",
+      height = math.floor(vim.o.lines * 0.38),
+    })
+    apply_window_options(win)
   elseif popup_type == "popup" then
-    popup = Popup(vim.tbl_deep_extend("keep", popup_opts, {
-      position = "50%",
-      size = {
-        width = "62%",
-        height = "62%",
-      },
-      padding = { 1, 1, 1, 1 },
-      enter = true,
-      focusable = true,
+    local padding = 1
+    local total_width = math.floor(vim.o.columns * 0.62)
+    local total_height = math.floor(vim.o.lines * 0.62)
+    local content_width = math.max(1, total_width - padding * 2)
+    local content_height = math.max(1, total_height - padding * 2)
+    local row = math.floor((vim.o.lines - total_height) / 2)
+    local col = math.floor((vim.o.columns - total_width) / 2)
+
+    win = vim.api.nvim_open_win(buf, true, {
+      relative = "editor",
+      row = row,
+      col = col,
+      width = content_width,
+      height = content_height,
+      style = "minimal",
+      border = "rounded",
       zindex = 50,
-      border = {
-        style = "rounded",
-      },
-    }))
-    -- Unmount component when cursor leaves buffer
-    popup:on(event.BufLeave, function()
-      popup:unmount()
-    end)
+    })
+    apply_window_options(win)
+
+    vim.api.nvim_create_autocmd("BufLeave", {
+      buffer = buf,
+      once = true,
+      callback = function()
+        if vim.api.nvim_win_is_valid(win) then
+          vim.api.nvim_win_close(win, true)
+        end
+        if vim.api.nvim_buf_is_valid(buf) then
+          vim.api.nvim_buf_delete(buf, { force = true })
+        end
+      end,
+    })
+
+    local refresh_group = vim.api.nvim_create_augroup("refresh_wtf_popup_layout", { clear = true })
+    vim.api.nvim_create_autocmd("WinResized", {
+      group = refresh_group,
+      callback = function()
+        if not vim.api.nvim_win_is_valid(win) then
+          return
+        end
+
+        local new_total_width = math.floor(vim.o.columns * 0.62)
+        local new_total_height = math.floor(vim.o.lines * 0.62)
+        local new_content_width = math.max(1, new_total_width - padding * 2)
+        local new_content_height = math.max(1, new_total_height - padding * 2)
+        local new_row = math.floor((vim.o.lines - new_total_height) / 2)
+        local new_col = math.floor((vim.o.columns - new_total_width) / 2)
+
+        vim.api.nvim_win_set_config(win, {
+          relative = "editor",
+          row = new_row,
+          col = new_col,
+          width = new_content_width,
+          height = new_content_height,
+        })
+      end,
+    })
   else
     return nil, "Invalid popup type"
   end
 
-  vim.api.nvim_buf_set_lines(popup.bufnr, 0, 1, false, formatted_message)
+  vim.api.nvim_buf_set_lines(buf, 0, 1, false, formatted_message)
 
-  popup:mount()
-
-  vim.api.nvim_create_autocmd("WinResized", {
-    group = vim.api.nvim_create_augroup("refresh_wtf_popup_layout", { clear = true }),
-    callback = function()
-      popup:update_layout()
-    end,
-  })
-
-  return popup
+  return { bufnr = buf, win = win }
 end
 
 return M

@@ -46,7 +46,6 @@ Install the plugin with your preferred package manager:
 {
   "piersolenski/wtf.nvim",
   dependencies = {
-    "MunifTanjim/nui.nvim",
     -- Optional: For WtfGrepHistory (pick one)
     "nvim-telescope/telescope.nvim",
     -- "folke/snacks.nvim",
@@ -123,7 +122,6 @@ use({
     require("wtf").setup()
   end,
   requires = {
-    "MunifTanjim/nui.nvim",
     -- Optional: For WtfGrepHistory (pick one)
     "nvim-telescope/telescope.nvim",
     -- "folke/snacks.nvim",

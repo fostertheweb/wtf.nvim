@@ -82,7 +82,6 @@ LAZY.NVIM ~
     {
       "piersolenski/wtf.nvim",
       dependencies = {
-        "MunifTanjim/nui.nvim",
         -- Optional: For WtfGrepHistory (pick one)
         "nvim-telescope/telescope.nvim",
         -- "folke/snacks.nvim",
@@ -160,7 +159,6 @@ PACKER.NVIM ~
         require("wtf").setup()
       end,
       requires = {
-        "MunifTanjim/nui.nvim",
         -- Optional: For WtfGrepHistory (pick one)
         "nvim-telescope/telescope.nvim",
         -- "folke/snacks.nvim",

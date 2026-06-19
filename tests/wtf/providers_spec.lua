@@ -25,13 +25,16 @@ describe("Providers", function()
           local env_var = result:match("Missing environment variable: (.+)")
           if env_var then
             skip_reason = string.format("Requires %s environment variable to be set", env_var)
+          elseif result:match("No GitHub Copilot OAuth token found") then
+            skip_reason = "Requires a GitHub Copilot OAuth token"
           end
         end
       end
 
       -- Special case for Ollama which requires a model ID set in the Makefile
       if provider_name == "ollama" and not skip_reason then
-        if not os.getenv("OLLAMA_MODEL_ID") then
+        local ollama_model = os.getenv("OLLAMA_MODEL_ID")
+        if not ollama_model or ollama_model == "" then
           skip_reason = "Requires OLLAMA_MODEL_ID environment variable to be set"
         end
       end

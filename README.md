@@ -40,7 +40,52 @@ Support for [Anthropic](https://www.anthropic.com), [Copilot](https://github.com
 
 Install the plugin with your preferred package manager:
 
-### lazy.nvim
+<details>
+<summary>
+<h3>vim.pack</h3>
+</summary>
+
+```lua
+vim.pack.add {
+  'https://github.com/piersolenski/wtf.nvim',
+    -- Optional: For WtfGrepHistory (pick one)
+    "https://github.com/nvim-telescope/telescope.nvim",
+    -- "https://github.com/folke/snacks.nvim",
+    -- "https://github.com/ibhagwan/fzf-lua",
+}
+
+require("wtf").setup()
+
+vim.keymap.set('n', '<leader>wd', function()
+  require('wtf').diagnose()
+end, { desc = 'Diagnose' })
+
+vim.keymap.set({ 'n', 'x' }, '<leader>wf', function()
+  require('wtf').fix()
+end, { desc = 'Fix' })
+
+vim.keymap.set('n', '<leader>ws', function()
+  require('wtf').search()
+end, { desc = 'Search' })
+
+vim.keymap.set('n', '<leader>wh', function()
+  require('wtf').history()
+end, { desc = 'History' })
+
+vim.keymap.set('n', '<leader>wg', function()
+  require('wtf').grep_history()
+end, { desc = 'Grep history' })
+
+vim.keymap.set({ 'n', 'x' }, '<leader>wy', function()
+  require('wtf').yank()
+end, { desc = 'Yank message' })
+```
+<details>
+
+<details>
+<summary>
+<h3>lazy.nvim</h3>
+</summary>
 
 ```lua
 {
@@ -112,71 +157,7 @@ Install the plugin with your preferred package manager:
   },
 }
 ```
-
-### packer.nvim
-
-```lua
-use({
-  "piersolenski/wtf.nvim",
-  config = function()
-    require("wtf").setup()
-  end,
-  requires = {
-    -- Optional: For WtfGrepHistory (pick one)
-    "nvim-telescope/telescope.nvim",
-    -- "folke/snacks.nvim",
-    -- "ibhagwan/fzf-lua",
-  },
-})
-```
-
-### vim.pack (built-in)
-
-Neovim 0.11+ includes `vim.pack` for managing plugins without an external
-package manager.
-
-```lua
-vim.pack.add({
-  {
-    "piersolenski/wtf.nvim",
-    config = function()
-      require("wtf").setup()
-
-      vim.keymap.set({ "n", "x" }, "<leader>wd", function()
-        require("wtf").diagnose()
-      end, { desc = "Debug diagnostic with AI" })
-
-      vim.keymap.set({ "n", "x" }, "<leader>wf", function()
-        require("wtf").fix()
-      end, { desc = "Fix diagnostic with AI" })
-
-      vim.keymap.set("n", "<leader>ws", function()
-        require("wtf").search()
-      end, { desc = "Search diagnostic with Google" })
-
-      vim.keymap.set("n", "<leader>wp", function()
-        require("wtf").pick_provider()
-      end, { desc = "Pick provider" })
-
-      vim.keymap.set("n", "<leader>wh", function()
-        require("wtf").history()
-      end, { desc = "Populate the quickfix list with previous chat history" })
-
-      vim.keymap.set("n", "<leader>wg", function()
-        require("wtf").grep_history()
-      end, { desc = "Grep previous chat history with Telescope" })
-
-      vim.keymap.set({ "n", "x" }, "<leader>wy", function()
-        require("wtf").yank()
-      end, { desc = "Yank diagnostic to clipboard" })
-    end,
-  },
-  -- Optional: For WtfGrepHistory (pick one)
-  { "nvim-telescope/telescope.nvim" },
-  -- { "folke/snacks.nvim" },
-  -- { "ibhagwan/fzf-lua" },
-})
-```
+</details>
 
 In order to use the AI functionality, you may need to set an environment variable for your provider of choice:
 

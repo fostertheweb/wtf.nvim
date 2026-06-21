@@ -38,15 +38,22 @@ end
 ---@return string? text
 ---@return string? error
 local function process_response(response, provider_config)
-  local success, response_table = pcall(vim.json.decode, response.body)
-
-  if not success or not response_table then
-    return nil, "Bad or no response from API"
+  if not response then
+    return nil, "No response from API"
   end
 
+  local success, response_table = pcall(vim.json.decode, response.body)
+
   if response.status >= 400 then
+    if not success or not response_table then
+      return nil, response.body or "Bad or no response from API"
+    end
     local error = provider_config.format_error(response_table)
     return nil, error
+  end
+
+  if not success or not response_table then
+    return nil, response.body or "Bad or no response from API"
   end
 
   local text = provider_config.format_response(response_table)

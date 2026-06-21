@@ -1,4 +1,5 @@
-*wtf.nvim.txt*              For Neovim              Last change: 2026 April 05
+*wtf.nvim.txt*
+                                       For Neovim    Last change: 2026 June 21
 
 ==============================================================================
 Table of Contents                                 *wtf.nvim-table-of-contents*
@@ -104,6 +105,14 @@ LAZY.NVIM ~
             require("wtf").fix()
           end,
           desc = "Fix diagnostic with AI",
+        },
+        {
+          "<leader>we",
+          mode = { "n", "x" },
+          function()
+            require("wtf").explain()
+          end,
+          desc = "Explain code with AI",
         },
         {
           mode = { "n" },
@@ -254,16 +263,16 @@ environment, invoke one of the commands:
                                          context, such as Wtf I'm using Node.js.
 
   :WtfFix [instructions]       Normal,   The same as Wtf, except instead of explaining the issue, it
-                                Visual    will attempt to fix it. Additional instructions can be
-                                          specified, such as WtfFix using camel casing.
+                               Visual    will attempt to fix it. Additional instructions can be
+                                         specified, such as WtfFix using camel casing.
 
   :WtfExplain [instructions]   Normal,   Explains the current line or visual selection, including the
-                                Visual    context of the surrounding logical block. Additional
-                                          instructions can be specified, such as
-                                          WtfExplain for a junior developer.
+                               Visual    context of the surrounding logical block. Additional
+                                         instructions can be specified, such as
+                                         WtfExplain for a junior developer.
 
   :WtfPickProvider             Normal    Allows you to pick a different provider other than the one
-                                          initially set in your config without restarting Vim.
+                                         initially set in your config without restarting Vim.
 
   :WtfSearch [search_engine]   Normal    Uses a search engine (defaults to the one in the setup or
                                          Google if not provided) to search for the first diagnostic.

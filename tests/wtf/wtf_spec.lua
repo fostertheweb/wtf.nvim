@@ -11,7 +11,7 @@ describe("Setup", function()
 
   it("accepts opencode as a provider", function()
     wtf.setup({
-      provider = "opencode",
+      provider = "opencode-go",
     })
   end)
 

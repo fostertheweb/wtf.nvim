@@ -2,10 +2,10 @@ local get_env_var = require("wtf.util.get_env_var")
 
 ---@type Wtf.Adapter
 return {
-  name = "opencode",
-  formatted_name = "OpenCode",
+  name = "opencode-go",
+  formatted_name = "OpenCode Go",
   url = "https://opencode.ai/zen/go/v1/chat/completions",
-  model_id = "qwen3.7-plus",
+  model_id = "deepseek-v4-flash",
   headers = {
     ["Content-Type"] = "application/json",
     Authorization = "Bearer ${api_key}",

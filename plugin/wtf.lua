@@ -29,6 +29,17 @@ end, {
   nargs = "*",
 })
 
+vim.api.nvim_create_user_command("WtfExplain", function(opts)
+  wtf.explain({
+    line1 = opts.line1,
+    line2 = opts.line2,
+    instructions = opts.args,
+  })
+end, {
+  range = true,
+  nargs = "*",
+})
+
 vim.api.nvim_create_user_command("WtfGrepHistory", function()
   wtf.grep_history()
 end, {})

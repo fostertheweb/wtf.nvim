@@ -1,5 +1,6 @@
 local config = require("wtf.config")
 local diagnose = require("wtf.commands.diagnose")
+local explain = require("wtf.commands.explain")
 local fix = require("wtf.commands.fix")
 local history = require("wtf.commands.history")
 local hooks = require("wtf.hooks")
@@ -18,6 +19,10 @@ end
 
 function M.diagnose(opts)
   return diagnose(opts)
+end
+
+function M.explain(opts)
+  return explain(opts)
 end
 
 function M.fix(opts)

@@ -70,6 +70,14 @@ Install the plugin with your preferred package manager:
       desc = "Fix diagnostic with AI",
     },
     {
+      "<leader>we",
+      mode = { "n", "x" },
+      function()
+        require("wtf").explain()
+      end,
+      desc = "Explain code with AI",
+    },
+    {
       mode = { "n" },
       "<leader>ws",
       function()
@@ -205,6 +213,7 @@ To use it, whenever you have an hint, warning or error in an LSP enabled environ
 | ---------------------------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `:Wtf [instructions]`        | Normal, Visual | Sends the code and diagnostic messages for a line or visual range to the provider. Additional instructions can also be specified, which might be useful if you want to offer extra context, such as `Wtf I'm using Node.js`.                           |
 | `:WtfFix [instructions]`     | Normal, Visual | The same as `Wtf`, except instead of explaining the issue, it will attempt to fix it. Additional instructions can be specified, such as `WtfFix using camel casing`.                                                                                   |
+| `:WtfExplain [instructions]` | Normal, Visual | Explains the current line or visual selection, including the context of the surrounding logical block. Additional instructions can be specified, such as `WtfExplain for a junior developer`.                                                            |
 | `:WtfPickProvider`           | Normal         | Allows you to pick a different provider other than the one initially set in your config without restarting Vim.                                                                                                                                        |
 | `:WtfSearch [search_engine]` | Normal         | Uses a search engine (defaults to the one in the setup or Google if not provided) to search for the **first** diagnostic. It will attempt to filter out unrelated strings specific to your local environment, such as file paths, for broader results. |
 | `:WtfHistory`                | Normal         | Use the quickfix list to see your previous chats.                                                                                                                                                                                                      |

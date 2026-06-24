@@ -167,6 +167,55 @@ PACKER.NVIM ~
     })
 <
 
+
+VIM.PACK (BUILT-IN) ~
+
+Neovim 0.11+ includes `vim.pack` for managing plugins without an external
+package manager.
+
+>lua
+    vim.pack.add({
+      {
+        "piersolenski/wtf.nvim",
+        config = function()
+          require("wtf").setup()
+
+          vim.keymap.set({ "n", "x" }, "<leader>wd", function()
+            require("wtf").diagnose()
+          end, { desc = "Debug diagnostic with AI" })
+
+          vim.keymap.set({ "n", "x" }, "<leader>wf", function()
+            require("wtf").fix()
+          end, { desc = "Fix diagnostic with AI" })
+
+          vim.keymap.set("n", "<leader>ws", function()
+            require("wtf").search()
+          end, { desc = "Search diagnostic with Google" })
+
+          vim.keymap.set("n", "<leader>wp", function()
+            require("wtf").pick_provider()
+          end, { desc = "Pick provider" })
+
+          vim.keymap.set("n", "<leader>wh", function()
+            require("wtf").history()
+          end, { desc = "Populate the quickfix list with previous chat history" })
+
+          vim.keymap.set("n", "<leader>wg", function()
+            require("wtf").grep_history()
+          end, { desc = "Grep previous chat history with Telescope" })
+
+          vim.keymap.set({ "n", "x" }, "<leader>wy", function()
+            require("wtf").yank()
+          end, { desc = "Yank diagnostic to clipboard" })
+        end,
+      },
+      -- Optional: For WtfGrepHistory (pick one)
+      { "nvim-telescope/telescope.nvim" },
+      -- { "folke/snacks.nvim" },
+      -- { "ibhagwan/fzf-lua" },
+    })
+<
+
 In order to use the AI functionality, you may need to set an environment
 variable for your provider of choice:
 
